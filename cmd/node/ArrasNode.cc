@@ -30,7 +30,21 @@
 #include <ifaddrs.h>
 #include <netdb.h>
 #include <net/if.h>
+#ifndef __APPLE__
 #include <malloc.h>
+#endif
+
+#ifndef HOST_NAME_MAX
+# ifdef _POSIX_HOST_NAME_MAX
+#  define HOST_NAME_MAX _POSIX_HOST_NAME_MAX
+# else
+#  define HOST_NAME_MAX 255
+# endif
+#endif
+
+#ifdef __APPLE__
+extern char** environ;
+#endif
 
 #if defined(JSONCPP_VERSION_MAJOR)
 #define memberName name
@@ -599,8 +613,10 @@ ArrasNode::calcResources()
 
     arras4::impl::getPlatformInfo(mPlatformInfo);
 
+#ifndef __APPLE__
     // don't allocate so much memory for malloc arenas
     mallopt(M_ARENA_MAX, 2);
+#endif
 }
 
 

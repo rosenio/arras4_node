@@ -50,6 +50,11 @@ target_link_libraries(${LibName}
         Boost::filesystem
 )
 
+if(IsDarwinPlatform)
+    target_compile_features(${LibName} PRIVATE cxx_std_17)
+    set_target_properties(${LibName} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+endif()
+
 # If at Dreamworks add a SConscript stub file so others can use this library.
 SConscript_Stub(${LibName})
 

@@ -36,10 +36,15 @@ target_link_libraries(${CmdName}
         pthread
 )
 
+if(IsDarwinPlatform)
+    target_compile_features(${CmdName} PRIVATE cxx_std_17)
+endif()
+
+
 # prevent use of crash reporter since it isn't yet supported
 target_compile_definitions(${CmdName} PRIVATE DONT_USE_CRASH_REPORTER)
 
-# Use RUNPATH instead of RPATH
+ArrasNode_cxx_compile_definitions(${CmdName})
 ArrasNode_link_options(${CmdName})
 
 install(TARGETS ${CmdName}

@@ -11,25 +11,25 @@ add_library(${PROJECT_NAME}::${LibName} ALIAS ${LibName})
 
 target_sources(${LibName}
     PRIVATE
-        ArrasController.cc 
-        ArrasSessions.cc 
-        Computation.cc 
-        ComputationConfig.cc 
-        ComputationDefaults.cc 
-        Session.cc 
+        ArrasController.cc
+        ArrasSessions.cc
+        Computation.cc
+        ComputationConfig.cc
+        ComputationDefaults.cc
+        Session.cc
         SessionConfig.cc
 )
 
 set_property(TARGET ${LibName}
     PROPERTY PUBLIC_HEADER
-        ArrasController.h 
-        ArrasSessions.h 
-        Computation.h 
-        ComputationConfig.h 
-        ComputationDefaults.h 
-        OperationError.h 
-        Session.h 
-        SessionConfig.h 
+        ArrasController.h
+        ArrasSessions.h
+        Computation.h
+        ComputationConfig.h
+        ComputationDefaults.h
+        OperationError.h
+        Session.h
+        SessionConfig.h
         SessionError.h
 )
 
@@ -41,13 +41,17 @@ target_include_directories(${LibName}
 
 target_link_libraries(${LibName}
     PUBLIC
-        ArrasCore::arras4_log 
+        ArrasCore::arras4_log
         ArrasCore::execute
         ArrasCore::shared_impl
         ArrasCore::core_messages
         ArrasCore::network
         ArrasNode::node_messages
 )
+
+if(IsDarwinPlatform)
+    target_compile_features(${LibName} PRIVATE cxx_std_17)
+endif()
 
 # If at Dreamworks add a SConscript stub file so others can use this library.
 SConscript_Stub(${LibName})

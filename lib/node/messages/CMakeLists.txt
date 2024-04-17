@@ -25,6 +25,10 @@ set_property(TARGET ${LibName}
         SessionRoutingDataMessage.h
 )
 
+if(IsDarwinPlatform)
+    target_compile_features(${LibName} PRIVATE cxx_std_17)
+endif()
+
 target_include_directories(${LibName}
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

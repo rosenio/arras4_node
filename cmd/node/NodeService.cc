@@ -93,7 +93,7 @@ NodeService::NodeService(unsigned numServerThreads,
     mHttpServer.GET += std::bind(&UrlRouter::handle,&mGetRouter,_1,_2);
     mHttpServer.PUT += std::bind(&UrlRouter::handle,&mPutRouter,_1,_2);
     mHttpServer.POST += std::bind(&UrlRouter::handle,&mPostRouter,_1,_2);
-    mHttpServer.DELETE += std::bind(&UrlRouter::handle,&mDeleteRouter,_1,_2);
+    mHttpServer.HTTPDELETE += std::bind(&UrlRouter::handle,&mDeleteRouter,_1,_2);
 
     // Can't use std::bind with the overloads of add(), because it will match against all of them...
     mGetRouter.add("node/1/health",[this](const HSReq &req, HSResp &resp) { GET_health(req,resp); });
@@ -478,7 +478,7 @@ bool NodeService::deregisterNode(const api::UUID& nodeId)
 {
     std::string url = mCoordinatorBaseUrl + "/nodes/" + nodeId.toString();
 
-    HttpRequest req(url, DELETE);
+    HttpRequest req(url, HTTPDELETE);
     req.setContentType(APPLICATION_JSON);
     req.setUserAgent(USER_AGENT);
 
@@ -596,7 +596,7 @@ void NodeService::notifyTerminated(const api::UUID& sessionId,
 	"/computations/" + compId.toString();
 
     // Initialize the request object.
-    HttpRequest req(url, DELETE);
+    HttpRequest req(url, HTTPDELETE);
     req.setContentType(APPLICATION_JSON);
     req.setUserAgent(USER_AGENT);
 
@@ -665,7 +665,7 @@ void NodeService::notifyTerminateSession(const api::UUID& sessionId,
     url += "/sessions/" + sessionId.toString();
 
     // Initialize the request object.
-    HttpRequest req(url, DELETE);
+    HttpRequest req(url, HTTPDELETE);
     req.setContentType(APPLICATION_JSON);
     req.setUserAgent(USER_AGENT);
  
