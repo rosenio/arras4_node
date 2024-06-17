@@ -28,6 +28,7 @@ variants = [
     ['os-CentOS-7', 'refplat-vfx2022.0'],
     ['os-rocky-9', 'refplat-vfx2021.0'],
     ['os-rocky-9', 'refplat-vfx2022.0'],
+    ['os-rocky-9', 'refplat-vfx2023.0'],
 ]
 
 requires = [
@@ -36,7 +37,7 @@ requires = [
 
 private_build_requires = [
     'cmake_modules-1.0',
-    'gcc-9.3.x'
+    'gcc-9.3.x|11.x'
 ]
 
 def commands():
