@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <thread>
 #include <unistd.h>
+#ifdef __APPLE__
+#include <sys/sysctl.h>
+#endif
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -148,6 +151,7 @@ HardwareFeatures::getProcessorInfo(std::vector<ProcessorInfo>& aProcInfo,
 {
     aProcInfo.clear();
 
+#ifndef __APPLE__
     for (const auto& pMap : parseProcInfo(aProcInfoFile)) {
         ProcessorInfo info;
         HardwareFeatures::ProcessorFeatures::const_iterator it;
@@ -186,6 +190,26 @@ HardwareFeatures::getProcessorInfo(std::vector<ProcessorInfo>& aProcInfo,
     }
 
     return static_cast<unsigned int>(aProcInfo.size());
+#else
+
+    ProcessorInfo info;
+
+    info.mId = 0 ;
+    info.mChip = 0 ; 
+    info.mCore = 0 ; 
+    info.mModel = 0 ;
+
+    static char name[64] = "";
+    size_t len = sizeof(name);
+    sysctlbyname("machdep.cpu.brand_string", name, &len, NULL, 0);
+
+    info.mModelName = name; 
+
+    aProcInfo.push_back(info);
+
+    return getCoreCount();
+
+#endif 
 }
 
 unsigned int
